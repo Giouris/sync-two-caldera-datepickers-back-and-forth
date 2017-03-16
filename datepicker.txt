@@ -1,0 +1,63 @@
+jQuery( function( $ ){
+
+	var first_date_id 	= 'fld_9356744',	// date field ID to sync from
+		second_date_id 	= 'fld_9099709',	// date field ID to sync to
+		date_forward	= 3;				// number of days to sync forward by
+
+	// get the first field
+	var first_date 		= $( '[data-field="' + first_date_id + '"]' );
+
+	if( !first_date.length ){
+		return;
+	}
+
+	// bind date change event
+	first_date.on("changeDate", function() {
+		var start_date = first_date.cfdatepicker('getFormattedDate');
+		var d = new Date( start_date );
+		var second_date = first_date.closest('.row').find('[data-field="' + second_date_id + '"]');
+
+		d.setDate( d.getDate() + date_forward );
+		second_date.cfdatepicker( 'setStartDate', new Date(d) );
+		if( !second_date.val().length ){
+			second_date.cfdatepicker( 'update', new Date(d) );
+		}
+
+		second_date.on("changeDate", function() {
+			second_date.cfdatepicker( 'hide' );	
+		});
+		first_date.cfdatepicker( 'hide' );
+	});
+});
+
+jQuery( function( $ ){
+
+	var first_date_id 	= 'fld_9099709',	// date field ID to sync from
+		second_date_id 	= 'fld_9356744',	// date field ID to sync to
+		date_forward	= 3;				// number of days to sync forward by
+
+	// get the first field
+	var first_date 		= $( '[data-field="' + first_date_id + '"]' );
+
+	if( !first_date.length ){
+		return;
+	}
+
+	// bind date change event
+	first_date.on("changeDate", function() {
+		var start_date = first_date.cfdatepicker('getFormattedDate');
+		var d = new Date( start_date );
+		var second_date = first_date.closest('.row').find('[data-field="' + second_date_id + '"]');
+
+		d.setDate( d.getDate() - date_forward );
+		second_date.cfdatepicker( 'setEndDate', new Date(d) );
+		if( !second_date.val().length ){
+			second_date.cfdatepicker( 'update', new Date(d) );
+		}
+
+		second_date.on("changeDate", function() {
+			second_date.cfdatepicker( 'hide' );	
+		});
+		first_date.cfdatepicker( 'hide' );
+	});
+});
